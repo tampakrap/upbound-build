@@ -322,6 +322,9 @@ build.artifacts: ; @:
 # build releasable artifacts. this will run for each platform being built
 build.artifacts.platform: ; @:
 
+# build releasable bundled artifacts. this will run for each platform being built
+build.artifacts.bundle.platform: ; @:
+
 # runs at the end of the build to do any cleanup, caching etc.
 # these will run once regardless of how many platforms we are building
 build.done: ; @:
@@ -335,6 +338,7 @@ do.build.platform: $(foreach p,$(PLATFORMS), do.build.platform.$(p))
 # helper targets for building multiple platforms
 do.build.artifacts.%:
 	@$(MAKE) build.artifacts.platform PLATFORM=$*
+	@$(MAKE) build.artifacts.bundle.platform PLATFORM=$*
 do.build.artifacts: $(foreach p,$(PLATFORMS), do.build.artifacts.$(p))
 
 # build for all platforms
@@ -392,7 +396,7 @@ e2e:
 	@$(MAKE) e2e.run
 	@$(MAKE) e2e.done
 
-.PHONY: build.init build.check build.check.platform build.code build.code.platform build.artifacts build.artifacts.platform
+.PHONY: build.init build.check build.check.platform build.code build.code.platform build.artifacts build.artifacts.platform build.artifacts.bundle.platform
 .PHONY: build.done do.build.platform.% do.build.platform do.build.artifacts.% do.build.artifacts
 .PHONY: build.all build clean distclean lint test test.init test.run test.done e2e.init e2e.run e2e.done
 
